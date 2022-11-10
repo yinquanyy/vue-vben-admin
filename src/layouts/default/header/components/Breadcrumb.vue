@@ -77,6 +77,7 @@
           } as unknown as RouteLocationMatched);
         }
         routes.value = breadcrumbList;
+        console.log(breadcrumbList);
       });
 
       function getMatched(menus: Menu[], parent: string[]) {

@@ -1,48 +1,79 @@
-import { getAllRoleList, isAccountExist } from '/@/api/demo/system';
+import { getAllRoleList, isAccountExist, setAccountStatus } from '/@/api/admin/system';
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-
+import { h } from 'vue';
+import { Switch } from 'ant-design-vue';
+import { useMessage } from '/@/hooks/web/useMessage';
 export const columns: BasicColumn[] = [
   {
-    title: '用户名',
-    dataIndex: 'account',
+    title: '登录名',
+    dataIndex: 'userName',
     width: 120,
   },
   {
     title: '昵称',
-    dataIndex: 'nickname',
+    dataIndex: 'nickName',
     width: 120,
   },
   {
-    title: '邮箱',
-    dataIndex: 'email',
+    title: '手机号',
+    dataIndex: 'phone',
     width: 120,
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    width: 180,
   },
   {
     title: '角色',
     dataIndex: 'role',
-    width: 200,
+    width: 100,
   },
   {
-    title: '备注',
-    dataIndex: 'remark',
+    title: '状态',
+    dataIndex: 'status',
+    width: 120,
+    customRender: ({ record }) => {
+      if (!Reflect.has(record, 'pendingStatus')) {
+        record.pendingStatus = false;
+      }
+      return h(Switch, {
+        checked: record.status === 1,
+        checkedChildren: '已启用',
+        unCheckedChildren: '已禁用',
+        loading: record.pendingStatus,
+        onChange(checked: boolean) {
+          record.pendingStatus = true;
+          const newStatus = checked ? 1 : 0;
+          const { createMessage } = useMessage();
+          setAccountStatus(record.userId, newStatus)
+            .then(() => {
+              record.status = newStatus;
+              createMessage.success(`已成功修改账号状态`);
+            })
+            .catch(() => {
+              createMessage.error('修改账号状态失败');
+            })
+            .finally(() => {
+              record.pendingStatus = false;
+            });
+        },
+      });
+    },
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    width: 150,
+    format: 'date|YYYY-MM-DD HH:mm:ss',
   },
 ];
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'account',
+    field: 'userName',
     label: '用户名',
     component: 'Input',
     colProps: { span: 8 },
   },
   {
-    field: 'nickname',
+    field: 'nickName',
     label: '昵称',
     component: 'Input',
     colProps: { span: 8 },
@@ -51,7 +82,7 @@ export const searchFormSchema: FormSchema[] = [
 
 export const accountFormSchema: FormSchema[] = [
   {
-    field: 'account',
+    field: 'userName',
     label: '用户名',
     component: 'Input',
     helpMessage: ['本字段演示异步验证', '不能输入带有admin的用户名'],
@@ -106,7 +137,7 @@ export const accountFormSchema: FormSchema[] = [
     required: true,
   },
   {
-    field: 'nickname',
+    field: 'nickName',
     label: '昵称',
     component: 'Input',
     required: true,

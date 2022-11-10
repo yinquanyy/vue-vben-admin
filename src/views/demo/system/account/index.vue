@@ -20,14 +20,10 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
-                icon: 'ant-design:delete-outlined',
+                icon: 'ant-design:key-outlined',
                 color: 'error',
-                tooltip: '删除此账号',
-                popConfirm: {
-                  title: '是否确认删除',
-                  placement: 'left',
-                  confirm: handleDelete.bind(null, record),
-                },
+                tooltip: '重置密码',
+                onClick: handleDelete.bind(null, record),
               },
             ]"
           />
@@ -41,7 +37,7 @@
   import { defineComponent, reactive } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { getAccountList } from '/@/api/demo/system';
+  import { getAccountList } from '/@/api/admin/system';
   import { PageWrapper } from '/@/components/Page';
   import DeptTree from './DeptTree.vue';
 
@@ -61,7 +57,7 @@
       const [registerTable, { reload, updateTableDataRecord }] = useTable({
         title: '账号列表',
         api: getAccountList,
-        rowKey: 'id',
+        rowKey: 'userId',
         columns,
         formConfig: {
           labelWidth: 120,

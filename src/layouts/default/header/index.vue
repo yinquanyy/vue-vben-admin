@@ -21,14 +21,14 @@
     <!-- left end -->
 
     <!-- menu start -->
-    <div :class="`${prefixCls}-menu`" v-if="getShowTopMenu && !getIsMobile">
+    <!-- <div :class="`${prefixCls}-menu`" v-if="getShowTopMenu && !getIsMobile">
       <LayoutMenu
         :isHorizontal="true"
         :theme="getHeaderTheme"
         :splitType="getSplitType"
         :menuMode="getMenuMode"
       />
-    </div>
+    </div> -->
     <!-- menu-end -->
 
     <!-- action  -->
@@ -61,7 +61,7 @@
 
   import { Layout } from 'ant-design-vue';
   import { AppLogo } from '/@/components/Application';
-  import LayoutMenu from '../menu/index.vue';
+  // import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
 
   import { AppSearch } from '/@/components/Application';
@@ -88,7 +88,7 @@
       AppLogo,
       LayoutTrigger,
       LayoutBreadcrumb,
-      LayoutMenu,
+      // LayoutMenu,
       UserDropDown,
       AppLocalePicker,
       FullScreen,

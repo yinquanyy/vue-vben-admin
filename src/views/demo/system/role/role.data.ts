@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Switch } from 'ant-design-vue';
-import { setRoleStatus } from '/@/api/demo/system';
+import { setRoleStatus } from '../../../../api/admin/system';
 import { useMessage } from '/@/hooks/web/useMessage';
 
 export const columns: BasicColumn[] = [
@@ -13,12 +13,12 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '角色值',
-    dataIndex: 'roleValue',
+    dataIndex: 'roleKey',
     width: 180,
   },
   {
     title: '排序',
-    dataIndex: 'orderNo',
+    dataIndex: 'roleSort',
     width: 50,
   },
   {
@@ -30,13 +30,13 @@ export const columns: BasicColumn[] = [
         record.pendingStatus = false;
       }
       return h(Switch, {
-        checked: record.status === '1',
+        checked: record.status === 1,
         checkedChildren: '已启用',
         unCheckedChildren: '已禁用',
         loading: record.pendingStatus,
         onChange(checked: boolean) {
           record.pendingStatus = true;
-          const newStatus = checked ? '1' : '0';
+          const newStatus = checked ? 1 : 0;
           const { createMessage } = useMessage();
           setRoleStatus(record.id, newStatus)
             .then(() => {
@@ -55,8 +55,9 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'createdAt',
     width: 180,
+    format: 'date|YYYY-MM-DD HH:mm:ss',
   },
   {
     title: '备注',
